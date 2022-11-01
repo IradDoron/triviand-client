@@ -5,10 +5,17 @@ import QBoxes from 'components/QBoxes';
 
 import { useEffect, useState } from 'react';
 
+import { useRecoilState, useSetRecoilState } from 'recoil';
+
+import { currDirState, currLangState } from 'store/settings';
+
 function App() {
 	const [questionsCollection, setQuestionsCollection] = useState<any>([]);
 	const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
 	const [currQuestion, setCurrQuestion] = useState<any>(null);
+
+	const setCurrLang = useSetRecoilState(currLangState);
+	const [currDir, setCurrDir] = useRecoilState(currDirState);
 
 	useEffect(() => {
 		const questionsCollection = getQuestionsCollectionByTypeAndGenres(
@@ -31,11 +38,27 @@ function App() {
 		setCurrQuestionIndex(newIndex);
 	};
 
+	const handleLangChange = (newLang: string) => {
+		setCurrLang(newLang);
+		switch (newLang) {
+			case 'he':
+				setCurrDir('rtl');
+				break;
+			case 'en':
+				setCurrDir('ltr');
+				break;
+		}
+	};
+
 	return (
-		<>
-			<QBoxes.Numeric question={currQuestion}  />
+		<div dir={currDir}>
+			<div>
+				<button onClick={() => handleLangChange('he')}>עברית</button>
+				<button onClick={() => handleLangChange('en')}>English</button>
+			</div>
+			<QBoxes.Numeric question={currQuestion} />
 			<button onClick={handleNextQuestionClick}>Next</button>
-		</>
+		</div>
 	);
 }
 
