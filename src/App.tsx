@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import getDifferentRandomItemFromArray from 'utils/other/getDifferentRandomItemFromArray';
+import getQuestionsCollectionByTypeAndGenres from 'utils/questions/getQuestionsCollectionByTypeAndGenres';
+
+import QBoxes from 'components/QBoxes';
+
+import { useEffect, useState } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	const [questionsCollection, setQuestionsCollection] = useState<any>([]);
+	const [currQuestionIndex, setCurrQuestionIndex] = useState(0);
+	const [currQuestion, setCurrQuestion] = useState<any>(null);
+
+	useEffect(() => {
+		const questionsCollection = getQuestionsCollectionByTypeAndGenres(
+			'numeric',
+			['Trivia']
+		);
+		setQuestionsCollection(questionsCollection);
+	}, []);
+
+	useEffect(() => {
+		setCurrQuestion(questionsCollection[currQuestionIndex]);
+	}, [currQuestionIndex, questionsCollection]);
+
+	const handleNextQuestionClick = () => {
+		const [newQuestion, newIndex] = getDifferentRandomItemFromArray(
+			questionsCollection,
+			currQuestionIndex
+		);
+		setCurrQuestion(newQuestion);
+		setCurrQuestionIndex(newIndex);
+	};
+
+	return (
+		<>
+			<QBoxes.Numeric question={currQuestion}  />
+			<button onClick={handleNextQuestionClick}>Next</button>
+		</>
+	);
 }
 
 export default App;
