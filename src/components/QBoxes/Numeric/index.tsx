@@ -1,7 +1,8 @@
-
 import { currLangState } from 'store/settings';
 
 import { useRecoilValue } from 'recoil';
+
+import { Box, Typography } from '@mui/material';
 
 interface Props {
 	question: any;
@@ -10,18 +11,26 @@ interface Props {
 function Numeric(props: Props) {
 	const { question } = props;
 
-    const currLang = useRecoilValue(currLangState);
+	const currLang = useRecoilValue(currLangState);
 
 	return (
 		<>
-			<h1>Numeric Qeustions</h1>
-			<h2>{question?.question[currLang]}</h2>
-			<h3>
+			<Box sx={{ minHeight: 200, display: 'flex' }}>
+				<Typography
+					variant="h3"
+					textAlign="center"
+					maxWidth="900px"
+					margin="auto"
+				>
+					{question?.question[currLang]}
+				</Typography>
+			</Box>
+			<Typography variant="subtitle1">
 				{question?.answer}{' '}
 				{question?.unit[currLang]
 					? question?.unit[currLang]
 					: question?.unit.__default}
-			</h3>
+			</Typography>
 		</>
 	);
 }

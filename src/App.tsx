@@ -3,6 +3,8 @@ import getQuestionsCollectionByTypeAndGenres from 'utils/questions/getQuestionsC
 
 import QBoxes from 'components/QBoxes';
 
+import { Box, Button } from '@mui/material';
+
 import { useEffect, useState } from 'react';
 
 import { useRecoilState, useSetRecoilState } from 'recoil';
@@ -51,14 +53,27 @@ function App() {
 	};
 
 	return (
-		<div dir={currDir}>
+		<Box
+			dir={currDir}
+			sx={{
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+				'& > *': {
+					margin: '20px',
+				},
+			}}
+		>
 			<div>
-				<button onClick={() => handleLangChange('he')}>עברית</button>
-				<button onClick={() => handleLangChange('en')}>English</button>
+				<Button onClick={() => handleLangChange('he')}>עברית</Button>
+				<Button onClick={() => handleLangChange('en')}>English</Button>
 			</div>
 			<QBoxes.Numeric question={currQuestion} />
-			<button onClick={handleNextQuestionClick}>Next</button>
-		</div>
+			<Button variant="outlined" onClick={handleNextQuestionClick}>
+				Next
+			</Button>
+		</Box>
 	);
 }
 
